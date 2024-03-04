@@ -1,13 +1,15 @@
-package com.colak.springwebinterceptortutorial.interceptor;
+package com.colak.springwebinterceptortutorial.processingtime.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-@Component
+/**
+ * In Spring Boot, an interceptor allows you to intercept and perform pre-processing or post-processing logic for HTTP
+ * requests before they reach a controller’s request mapping method, or after they have been processed by the controller method.
+ */
 @Slf4j
 public class RequestProcessingTimeInterceptor implements HandlerInterceptor {
 
@@ -22,11 +24,12 @@ public class RequestProcessingTimeInterceptor implements HandlerInterceptor {
                 startTime);
 
         request.setAttribute("startTime", startTime);
+        // If “preHandle” returns “true”, the request processing continues
         // if returned false, we need to make sure 'response' is sent
         return true;
     }
 
-    // Called after the handler is executed.
+    // Called after the handler is executed but before the view is rendered or the response is sent to the client.
     @Override
     public void postHandle(HttpServletRequest request,
                            HttpServletResponse response,
@@ -39,6 +42,7 @@ public class RequestProcessingTimeInterceptor implements HandlerInterceptor {
     }
 
     // Called after the complete request has finished and the view was generated.
+    // The method is called regardless of the outcome of the request.
     @Override
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response,
